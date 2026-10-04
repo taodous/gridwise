@@ -1,0 +1,32 @@
+repos:
+  # Vérifications génériques sur tous les fichiers
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace     # espaces en fin de ligne
+      - id: end-of-file-fixer       # retour à la ligne final
+      - id: check-yaml              # YAML valide
+      - id: check-toml              # TOML valide (pyproject)
+      - id: detect-private-key      # bloque une clé privée commitée par erreur
+
+  # Nos outils, lancés via uv avec les versions du lockfile
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types: [python]
+
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types: [python]
+
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        types: [python]
+        pass_filenames: false
