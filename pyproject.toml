@@ -15,3 +15,39 @@ gridwise = "gridwise:main"
 [build-system]
 requires = ["uv_build>=0.12.22,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.10",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # erreurs de style PEP 8
+    "F",       # erreurs logiques (imports inutilisés, variables non définies)
+    "I",       # tri des imports
+    "B",       # bugs probables
+    "UP",      # syntaxe Python moderne
+    "SIM",     # simplifications
+    "N",       # conventions de nommage
+    "PT",      # bonnes pratiques pytest
+    "C90",     # complexité cyclomatique
+    "RUF",     # règles propres à ruff
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10  # notre metric : 10 max par fonction
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=gridwise --cov-branch --cov-report=term-missing --cov-fail-under=80"
